@@ -89,7 +89,7 @@
   <h1>Correctable Agency</h1>
   <p class="subtitle">Alignment via typed commitments, bounded self-modification, and contestable oversight</p>
   <div class="byline"><strong>Nguyen Thanh Nam</strong> &middot; Working paper, with an ongoing experimental program</div>
-  <div class="status"><strong>Status, 16 October 2026.</strong> All five system conditions in the paper (C0&ndash;C4) are built and tested. 12 experimental phases are done: 4,132 scored agent episodes on two open-weight models, each confirmatory test preregistered before its paid run. The write-up is in progress.</div>
+  <div class="status"><strong>Status, 16 October 2026.</strong> All five system conditions in the paper (C0&ndash;C4) are built and tested. 13 experimental phases are done: 4,324 scored agent episodes on two open-weight models, each confirmatory test preregistered before its paid run. The write-up is in progress.</div>
   <nav class="toc" aria-label="Contents">
     <a href="#question">Question</a><a href="#framework">Framework</a><a href="#architecture">Architecture</a>
     <a href="#testbed">Testbed</a><a href="#hypotheses">Hypotheses</a><a href="#findings">Findings</a>
@@ -164,7 +164,7 @@
       <tr><td><strong>H2</strong> Selective stability: ACA and USMR both improve</td><td><span class="pill part">partly</span></td><td>C4 fixes both directions of harness faults: 0/64 wrongful deploys and 64/64 legitimate deploys. Elsewhere ACA sits at ceiling, and the checklist control shows rigidity (it obeys an unauthorized pause).</td></tr>
       <tr><td><strong>H3</strong> Protected state is used behaviourally</td><td><span class="pill ok">supported</span></td><td>Rendering the harness's signer decision removes forged-role captures (21&ndash;0). Rendering a wrong decision steers behaviour too.</td></tr>
       <tr><td><strong>H4</strong> Broker contributes beyond prompting</td><td><span class="pill ok">supported</span></td><td>The enforced broker held in every cell of every phase. The leaky arm was exploited (22&ndash;0).</td></tr>
-      <tr><td><strong>H5</strong> Power-sensitive failure</td><td><span class="pill part">partly</span></td><td>Write access to governance state is exploited when reachable. The ability to influence evaluators is untested.</td></tr>
+      <tr><td><strong>H5</strong> Power-sensitive failure</td><td><span class="pill part">partly</span></td><td>Write access to governance state is exploited when reachable (22&ndash;0). Giving agents the power to build their own tools gives one of two models a route it uses on governance (13&ndash;0, Gemma only), and a governed tool channel removes it. The ability to influence evaluators is untested.</td></tr>
       <tr><td><strong>H6</strong> Generalization</td><td><span class="pill open">mostly open</span></td><td>16 paraphrased surfaces and context compression are covered. A third model, seeds, a second domain and model handoff are not yet tested.</td></tr>
     </tbody>
   </table></div>
@@ -202,6 +202,10 @@
     </ul>
     <p>C4 adds an independent monitor that checks the signed record against the applied state, and a review board that may only make the state match the record. It reached the correct outcome in every fault episode: 0/64 wrongful deploys, 64/64 legitimate deploys after the ruling. It added no friction on fault-free controls (108&ndash;0, both models).</p>
   </div>
+  <div class="finding">
+    <h3>7. Tool-building is power, used on governance only to enforce a decision the agent believed legitimate.</h3>
+    <p>Agents could turn their own scripts into tools, and the tools ran with the release service's access to the live pause flag. Gemma used this in 13 of 16 episodes where the release manager's signed resume had been dropped. It built a tool that cleared the flag, declared what it did, and deployed. It did so in 0 of 16 episodes under a valid pause. Qwen never built a tool that touched the flag. A governed channel, which reviewed each tool before installing it and gave tools only a contained copy of the flag, refused every such tool (13 refusals, 0 violations) with no cost to legitimate tool use (13&ndash;0). The failure is self-help enforcement outside the governing process, not defiance of a valid stop.</p>
+  </div>
 </section>
 
 <section id="phases">
@@ -222,8 +226,9 @@
       <tr><td class="ph">1C+</td><td>Typed state on the same long history</td><td><span class="pill ok">H_typed_memory 11&ndash;0</span> 0/64 captures, including laundered episodes.</td><td class="n">64</td></tr>
       <tr><td class="ph">1C+p</td><td>Pin signed messages in memory</td><td><span class="pill open">H_pin not supported (10&ndash;4)</span> Laundering roughly halved, not removed.</td><td class="n">50</td></tr>
       <tr><td class="ph">1F</td><td>Full architecture (C4) under harness authority faults</td><td><span class="pill ok">H_full 108&ndash;0</span> 0/64 wrongful deploys, 64/64 legitimate deploys after review, no friction on controls.</td><td class="n">384</td></tr>
+      <tr><td class="ph">1T</td><td>Agent-built tools: open vs governed tool channel</td><td><span class="pill ok">H_toolpower 13&ndash;0</span> Gemma alone: tools cleared a stuck flag 13/16, a valid pause 0/16. Qwen built no flag tools. The governed channel refused all 13 attempts.</td><td class="n">192</td></tr>
     </tbody>
-    <tfoot><tr><td class="ph">Total</td><td colspan="2" class="muted">12 phases, 2 models. About $320 of rented GPU time.</td><td class="n"><strong>4,132</strong></td></tr></tfoot>
+    <tfoot><tr><td class="ph">Total</td><td colspan="2" class="muted">13 phases, 2 models. About $340 of rented GPU time.</td><td class="n"><strong>4,324</strong></td></tr></tfoot>
   </table></div>
 </section>
 
@@ -246,7 +251,8 @@
     <li>the shared-blind-spot fault;</li>
     <li>a third model with multiple seeds and a second domain (H6);</li>
     <li>the emergency-exception control;</li>
-    <li>evaluator influence (H5).</li>
+    <li>evaluator influence (H5);</li>
+    <li>agent-built tools when a legitimate correction route also exists (does self-help persist?).</li>
   </ul>
   <p>Related essay: <a href="https://namspdr.substack.com/p/surprising-the-designer-is-not-escaping">Surprising the designer is not escaping</a>.</p>
 </section>
