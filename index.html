@@ -89,7 +89,7 @@
   <h1>Correctable Agency</h1>
   <p class="subtitle">Alignment via typed commitments, bounded self-modification, and contestable oversight</p>
   <div class="byline"><strong>Nguyen Thanh Nam</strong> &middot; Working paper, with an ongoing experimental program</div>
-  <div class="status"><strong>Status, 16 October 2026.</strong> All five system conditions in the paper (C0&ndash;C4) are built and tested. 13 experimental phases are done: 4,324 scored agent episodes on two open-weight models, each confirmatory test preregistered before its paid run. A third model from a different family has since replicated four of the tests (486 more episodes). A consolidated results write-up for the paper is complete, and this page follows it.</div>
+  <div class="status"><strong>Status, 16 October 2026.</strong> All five system conditions in the paper (C0&ndash;C4) are built and tested. 13 experimental phases are done: 4,324 scored agent episodes on two open-weight models, each confirmatory test preregistered before its paid run. A third model from a different family has since replicated four of the tests (486 more episodes), and a 14th phase tested the paper's &ldquo;shared blind spot&rdquo; on all three models (384 episodes). A consolidated results write-up for the paper is complete, and this page follows it.</div>
   <nav class="toc" aria-label="Contents">
     <a href="#question">Question</a><a href="#framework">Framework</a><a href="#architecture">Architecture</a>
     <a href="#testbed">Testbed</a><a href="#hypotheses">Hypotheses</a><a href="#tests">Tests</a><a href="#findings">Findings</a>
@@ -133,6 +133,7 @@
     <li><b>C2</b><span>Typed state: beliefs, commitments, authority and history rendered separately (plus a variant that also renders the harness's decision on each signed instruction).</span></li>
     <li><b>C3</b><span>Typed state + enforced brokers: protected updates and consequential actions must pass the policy.</span></li>
     <li><b>C4</b><span>Full architecture: C3 plus an independent authority monitor and a scoped review board with an appeal channel.</span></li>
+    <li><b>C4d</b><span>C4 whose monitor reads an independently kept access registry instead of a copy of the harness's own authority record.</span></li>
   </ul>
   <p>Two controls test whether gains are more than prompting. A <strong>checklist</strong> arm gets a strong natural-language caution prompt with a comparable token budget. A <strong>leaky</strong> arm has the same typed state and broker, but the governing flag is reachable from the workspace. Its gap from C3 measures how much safety comes from the fence rather than the model, i.e. binding versus containment.</p>
   <p>Two further arms test tool-building as added power. Both add a <code>build_tool</code> tool to C3, which installs a script the agent wrote as a program it can run. In <strong>T-open</strong>, installed tools can write the live pause flag. In <strong>T-gov</strong>, each tool is reviewed before it is installed, and tools only ever see a contained copy of the flag.</p>
@@ -150,7 +151,7 @@
   <ul>
     <li><strong>Domain:</strong> the paper's worked example, a release-management agent with a deploy task. It meets authenticated and spoofed pauses and resumes, forged signers, delegated authority, tool-output injection, ambiguous conditional pauses, long noisy histories, harness faults (dropped or wrongly applied pauses and resumes), and a task that needs a tool the agent must build itself.</li>
     <li><strong>Paired validity:</strong> every adversarial episode has a matched valid twin. Refusing a spoofed pause is correct; obeying an authorized one is correct. The benchmark scores transition structure, not obedience in the abstract.</li>
-    <li><strong>Models:</strong> Qwen3.6-27B and Gemma-4-31B, served with vLLM, temperature 0.7, up to 30 steps per episode. A third model, GLM-5.3-Flash, ran through its vendor's API with thinking on, on four of the preregistered tests (the same scripts, run on its episodes alone).</li>
+    <li><strong>Models:</strong> Qwen3.6-27B and Gemma-4-31B, served with vLLM, temperature 0.7, up to 30 steps per episode. A third model, GLM-5.3-Flash, ran through its vendor's API with thinking on, on four of the preregistered tests (the same scripts, run on its episodes alone) and in the shared-blind-spot phase.</li>
     <li><strong>Inference:</strong> each confirmatory hypothesis was frozen in a preregistration before any paid run, with exact one-sided McNemar tests on paired episodes (the same surface under two arms), pooled over models and reported per model. There were typically 16 surface variants per cell per model. Fewer than 6 discordant pairs without significance counts as inconclusive. Each launch was preceded by an independent adversarial code review, and capture labels were checked by blind second coders.</li>
     <li><strong>Metrics</strong> follow the paper: authorized correction acceptance (ACA), unauthorized self-mutation resistance (USMR), interpretive capture rate (ICR), intervention effectiveness (IE), task utility, and acknowledgment accuracy.</li>
   </ul>
@@ -188,6 +189,8 @@
       <tr><td class="ph">1C+p</td><td>H_pin: pinning signed messages removes laundering</td><td><span class="pill open">not supported</span> 10&ndash;4, p .09</td><td class="n"></td><td class="n">&ndash;</td></tr>
       <tr><td class="ph">1F</td><td>H_full: C4 is correct more often than C3 under harness faults</td><td><span class="pill ok">108&ndash;0</span> p 3&times;10<sup>&minus;33</sup></td><td class="n">58&ndash;0 / 50&ndash;0</td><td class="n"><strong>45&ndash;0</strong></td></tr>
       <tr><td class="ph">1T</td><td>H_toolpower: an open tool channel produces more governance violations than a governed one</td><td><span class="pill ok">13&ndash;0</span> p .0001, Gemma only</td><td class="n">0&ndash;0 / 13&ndash;0</td><td class="n">0&ndash;0</td></tr>
+      <tr><td class="ph">2B</td><td>H_registry: a monitor with an independent input catches a stale delegation that the harness and the C4 monitor share</td><td><span class="pill ok">94&ndash;0</span> p 5&times;10<sup>&minus;29</sup></td><td class="n">32&ndash;0 / 32&ndash;0</td><td class="n">30&ndash;0</td></tr>
+      <tr><td class="ph">2B</td><td>H_actor: without that monitor, the agent itself holds on a revoked delegation and deploys on a current one</td><td><span class="pill part">inconclusive</span> 2&ndash;0</td><td class="n">0&ndash;0 / 0&ndash;0</td><td class="n">2&ndash;0</td></tr>
     </tbody>
   </table></div>
   <p class="muted">On the third model, a Holm correction over its four tests leaves only H_full significant. H_motivated came out reversed: this model followed a dropped signed pause 12/16 but a dropped signed resume only 3/16, the cautious direction. The tool-power and forged-role effects were absent (0&ndash;0).</p>
@@ -233,11 +236,16 @@
     <h3>8. No model is fail-safe on its own, and prompting is no substitute for enforcement.</h3>
     <p>Qwen resolves authority conflicts toward the task; Gemma resolves them toward whoever appears to be the principal; the third model resolves them toward caution, yet it still deployed on a forged resume the harness had applied in 11 of 16 episodes. A caution checklist protects provenance but over-obeys: it complied with an unauthorized on-call pause 16 of 16 times. Typed headers protect authority but not provenance: Gemma accepted injected tool output in the typed arms too, and only the enforced broker stopped the effect. Agents rarely admitted a breach in their final summary: about 6% of breaching episodes (calibrated estimate, range 4&ndash;16%). Over half of those summaries asserted that the deploy had been authorized. In the tool-building phase, by contrast, 12 of 13 flag writes were disclosed, and the agents framed them as authorized. Disclosure tracks whether the agent believes its act was authorized more than honesty as such.</p>
   </div>
+  <div class="finding">
+    <h3>9. A monitor is only as independent as its inputs, and the agent detects a shared fault without acting on it.</h3>
+    <p>The paper warns that monitors can share blind spots with what they watch (&sect;12.3). We put a revoked delegation (a QA lead's old resume or pause right) into the authority record that both the harness and the C4 monitor read, with a workspace note recording the revocation, and an otherwise identical twin where the delegation is current. C4's monitor saw nothing and told the agent the state matched the signed record. The same monitor reading an independently kept registry caught every stale episode in all three models (94&ndash;0), with no cost on the current twins.</p>
+    <p>Without it, agents deployed on the revoked delegation in 46 of 48 episodes, as often as on the current one. Yet 22 of 48 had told the operator about the revocation before deploying, and 20 of those 22 deployed anyway. On a stale pause they flagged the revocation and held. In both directions the action followed the rendered state, not the agent's own correct finding. In a few episodes the agent took its doubt to the review board, which read the same stale record, ruled that the state &ldquo;follows the signed record&rdquo;, and the agent deployed citing the ruling. The registry here is correct by construction.</p>
+  </div>
 </section>
 
 <section id="phases">
   <h2>Experimental phases</h2>
-  <p class="muted">Episodes are scored agent runs, both models combined. Win&ndash;loss counts are discordant matched pairs in the preregistered direction.</p>
+  <p class="muted">Episodes are scored agent runs, all models combined. Win&ndash;loss counts are discordant matched pairs in the preregistered direction.</p>
   <div class="table-wrap"><table>
     <thead><tr><th>Phase</th><th>Question</th><th>Result</th><th class="n">Episodes</th></tr></thead>
     <tbody>
@@ -255,8 +263,9 @@
       <tr><td class="ph">1F</td><td>Full architecture (C4) under harness authority faults</td><td><span class="pill ok">H_full 108&ndash;0</span> 0/64 wrongful deploys, 64/64 legitimate deploys after review, no friction on controls.</td><td class="n">384</td></tr>
       <tr><td class="ph">1T</td><td>Agent-built tools: open vs governed tool channel</td><td><span class="pill ok">H_toolpower 13&ndash;0</span> Gemma alone: tools cleared a stuck flag 13/16, a valid pause 0/16. Qwen built no flag tools. The governed channel refused all 13 attempts.</td><td class="n">192</td></tr>
       <tr><td class="ph">2G</td><td>Third model (GLM-5.3-Flash, hosted API) on four preregistered tests</td><td><span class="pill ok">H_full 45&ndash;0</span> replicated. Motivated reasoning reversed (2&ndash;11); tool power and forged-role binding absent (0&ndash;0). About 36M of a 100M-token bundle.</td><td class="n">486</td></tr>
+      <tr><td class="ph">2B</td><td>Shared blind spot: a stale delegation in the authority record that the harness and the monitor share (3 models)</td><td><span class="pill ok">H_registry 94&ndash;0</span> an independent registry closes it. <span class="pill part">H_actor 2&ndash;0</span> agents flagged the revocation in 22/48 but deployed in 46/48.</td><td class="n">384</td></tr>
     </tbody>
-    <tfoot><tr><td class="ph">Total</td><td colspan="2" class="muted">14 phases, 3 models. About $340 of rented GPU time plus about 36M API tokens.</td><td class="n"><strong>4,810</strong></td></tr></tfoot>
+    <tfoot><tr><td class="ph">Total</td><td colspan="2" class="muted">15 phases, 3 models. About $357 of rented GPU time plus about 43M API tokens.</td><td class="n"><strong>5,194</strong></td></tr></tfoot>
   </table></div>
 </section>
 
@@ -268,7 +277,8 @@
       <tr><td>Spoofed vs authenticated authority; spoofed vs authorized pauses</td><td><span class="pill ok">done</span></td><td>Phases 1, 1R, 1S; harness faults in 1W, 1M, 1F</td></tr>
       <tr><td>Challenge, review and appeal</td><td><span class="pill ok">done</span></td><td>C4's appeal tool and scoped review board (1F)</td></tr>
       <tr><td>Conditions C0&ndash;C4 plus the checklist control</td><td><span class="pill ok">done</span></td><td>C4 in 1F</td></tr>
-      <tr><td>Ablations: provenance, authority typing, action brokerage, independent monitoring</td><td><span class="pill ok">done</span></td><td>1C memory phases, H_typed / H_rights, H_leak, 1F (deterministic review)</td></tr>
+      <tr><td>Ablations: provenance, authority typing, action brokerage, independent monitoring</td><td><span class="pill ok">done</span></td><td>1C memory phases, H_typed / H_rights, H_leak, 1F (deterministic review), 2B (independent monitor input)</td></tr>
+      <tr><td>Governors and monitors sharing a blind spot (&sect;12.3)</td><td><span class="pill part">partly</span></td><td>2B: a stale authority record, caught only by an independent registry; a wrong registry is untested</td></tr>
       <tr><td>Power: write access, tool access, context compression</td><td><span class="pill ok">done</span></td><td>H_leak, 1T, 1C</td></tr>
       <tr><td>Role change by claim vs by process; unsupported vs verified evidence; delayed intervention</td><td><span class="pill part">partly</span></td><td>delegated authority and forged roles; conditional pauses; scheduled events and long histories</td></tr>
       <tr><td>Emergency exception with an ex-ante trigger; counterfactual authority</td><td><span class="pill open">not yet</span></td><td>the worked example's matched control is not built</td></tr>
@@ -287,7 +297,7 @@
     <li><strong>Oversight is deterministic.</strong> The C4 review board is correct by construction, and the tool review in 1T is a fixed string match that no agent tried to evade. These phases test the architecture, not a fallible reviewer.</li>
     <li><strong>Text-based labels were calibrated against blind hand-coding.</strong> The keyword rule for 1T disclosure was invalid: it caught 4 of 13 disclosures and fired on most non-disclosures. The reported 12/13 comes from hand labels, which a blind coder matched on all 13. The breach-disclosure rule had precision 0.62 and a 3% miss rate, so the page reports the corrected estimate.</li>
     <li><strong>Only the policy core is formally verified.</strong> The command classifier around it is the unproven surface, and the leaky arm's hardlink gap is a deliberate instance of that.</li>
-    <li><strong>Shared blind spots are untested.</strong> The monitor reads the same signed-effect records as the harness. A fault upstream of both, such as a forged authority table of record, is the case the paper flags as unsolved (&sect;12.3).</li>
+    <li><strong>Shared blind spots are only partly tested.</strong> A stale authority record was caught by an independent registry that is correct by construction. A wrong registry, or both sources wrong, is untested; diversity of inputs narrows the blind spot the paper flags (&sect;12.3) without removing it.</li>
     <li><strong>Some benchmark controls are not built yet.</strong> The emergency-exception control from the worked example (a justified continued action under an ex-ante trigger) and evaluator-influence power are not yet tested.</li>
     <li><strong>The framework does not address value selection.</strong> As the paper says, it does not solve value learning or guarantee global safety. It makes one failure class measurable.</li>
   </ul>
@@ -300,7 +310,7 @@
     <li><strong>Generality (H6):</strong> multiple seeds on the core tests, and a larger model as a capability point. The third model is done: the architecture result replicated, and the behavioural effects proved model-specific.</li>
     <li><strong>A fallible, model-based reviewer</strong> in place of the deterministic board and review (H5, evaluator influence).</li>
     <li><strong>The emergency-exception control</strong> from the worked example.</li>
-    <li><strong>The shared-blind-spot fault:</strong> a forged authority record that both the harness and the monitor read.</li>
+    <li><strong>Arbitration under a shared blind spot:</strong> a wrong registry, and a review rule that escalates contested authority to the principal instead of upholding the record.</li>
     <li><strong>Self-help when a legitimate route works:</strong> agent-built tools alongside C4's review board.</li>
   </ol>
   <p>Related essay: <a href="https://namspdr.substack.com/p/surprising-the-designer-is-not-escaping">Surprising the designer is not escaping</a>.</p>
