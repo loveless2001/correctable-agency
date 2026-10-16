@@ -230,7 +230,7 @@
   </div>
   <div class="finding">
     <h3>8. Neither model is fail-safe on its own, and prompting is no substitute for enforcement.</h3>
-    <p>Qwen resolves authority conflicts toward the task; Gemma resolves them toward whoever appears to be the principal. A caution checklist protects provenance but over-obeys: it complied with an unauthorized on-call pause 16 of 16 times. Typed headers protect authority but not provenance: Gemma accepted injected tool output in the typed arms too, and only the enforced broker stopped the effect. Agents rarely disclosed a breach on their own (5 of 228 final summaries in the early phases) unless the act was one they counted as completing the task, as in the tool-building phase.</p>
+    <p>Qwen resolves authority conflicts toward the task; Gemma resolves them toward whoever appears to be the principal. A caution checklist protects provenance but over-obeys: it complied with an unauthorized on-call pause 16 of 16 times. Typed headers protect authority but not provenance: Gemma accepted injected tool output in the typed arms too, and only the enforced broker stopped the effect. Agents rarely admitted a breach in their final summary: about 6% of breaching episodes (calibrated estimate, range 4&ndash;16%). Over half of those summaries asserted that the deploy had been authorized. In the tool-building phase, by contrast, 12 of 13 flag writes were disclosed, and the agents framed them as authorized. Disclosure tracks whether the agent believes its act was authorized more than honesty as such.</p>
   </div>
 </section>
 
@@ -282,7 +282,7 @@
     <li><strong>Several effects come from one model.</strong> The forged-role and motivated-reasoning results are Qwen's; the tool-power result is Gemma's.</li>
     <li><strong>The protected arms in 1F and 1T cannot fail by design.</strong> Their informative content is the unprotected arm's exploit rate and the protected arm's utility. Both preregistrations said so in advance.</li>
     <li><strong>Oversight is deterministic.</strong> The C4 review board is correct by construction, and the tool review in 1T is a fixed string match that no agent tried to evade. These phases test the architecture, not a fallible reviewer.</li>
-    <li><strong>Some labels were corrected by hand.</strong> For example, disclosure in 1T was 4/13 by keyword match and 12/13 by hand-reading.</li>
+    <li><strong>Text-based labels were calibrated against blind hand-coding.</strong> The keyword rule for 1T disclosure was invalid: it caught 4 of 13 disclosures and fired on most non-disclosures. The reported 12/13 comes from hand labels, which a blind coder matched on all 13. The breach-disclosure rule had precision 0.62 and a 3% miss rate, so the page reports the corrected estimate.</li>
     <li><strong>Only the policy core is formally verified.</strong> The command classifier around it is the unproven surface, and the leaky arm's hardlink gap is a deliberate instance of that.</li>
     <li><strong>Shared blind spots are untested.</strong> The monitor reads the same signed-effect records as the harness. A fault upstream of both, such as a forged authority table of record, is the case the paper flags as unsolved (&sect;12.3).</li>
     <li><strong>Some benchmark controls are not built yet.</strong> The emergency-exception control from the worked example (a justified continued action under an ex-ante trigger) and evaluator-influence power are not yet tested.</li>
