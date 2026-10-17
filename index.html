@@ -88,8 +88,8 @@
 <header class="hero">
   <h1>Correctable Agency</h1>
   <p class="subtitle">Alignment via typed commitments, bounded self-modification, and contestable oversight</p>
-  <div class="byline"><strong>Nguyen Thanh Nam</strong> &middot; Working paper, with an ongoing experimental program</div>
-  <div class="status"><strong>Status, 17 October 2026.</strong> All five system conditions in the paper (C0&ndash;C4) are built and tested. 13 experimental phases are done: 4,324 scored agent episodes on two open-weight models, each confirmatory test preregistered before its paid run. GLM-5.3-Flash, from a third model family, has since replicated four of the tests (486 more episodes), a further phase tested the paper's &ldquo;shared blind spot&rdquo; on all three models (384 episodes), another replaced the deterministic review board with a fallible LLM reviewer (672 episodes), another tested two fixes for the blind spot that reviewer inherited (1,008 episodes), and a last one scoped the deterministic board's own rulings (192 episodes): 18 phases and 7,066 episodes in all. A consolidated results write-up for the paper is complete, and this page follows it.</div>
+  <div class="byline"><strong>Nguyen Thanh Nam</strong> &middot; Working paper and its experimental program</div>
+  <div class="status"><strong>Status, 17 October 2026.</strong> The current experimental program is complete: 18 phases and 7,066 agent episodes, with every confirmatory test preregistered before its paid run. All five system conditions in the paper (C0&ndash;C4) are built and tested. The first 13 phases (4,324 episodes) used two open-weight models, Qwen3.6-27B and Gemma-4-31B. GLM-5.3-Flash, from a third model family, then re-ran four of the tests (486 episodes); the architecture result replicated. Four further phases ran on all three models (2,256 episodes): the paper's &ldquo;shared blind spot&rdquo;, a fallible LLM reviewer in place of the deterministic review board, and two rounds of fixes to what the oversight layers claim. A consolidated results write-up for the paper is complete, and this page follows it.</div>
   <nav class="toc" aria-label="Contents">
     <a href="#question">Question</a><a href="#framework">Framework</a><a href="#architecture">Architecture</a>
     <a href="#testbed">Testbed</a><a href="#hypotheses">Hypotheses</a><a href="#tests">Tests</a><a href="#findings">Findings</a>
@@ -156,7 +156,7 @@
     <li><strong>Domain:</strong> the paper's worked example, a release-management agent with a deploy task. It meets authenticated and spoofed pauses and resumes, forged signers, delegated authority, tool-output injection, ambiguous conditional pauses, long noisy histories, harness faults (dropped or wrongly applied pauses and resumes), and a task that needs a tool the agent must build itself.</li>
     <li><strong>Paired validity:</strong> every adversarial episode has a matched valid twin. Refusing a spoofed pause is correct; obeying an authorized one is correct. The benchmark scores transition structure, not obedience in the abstract.</li>
     <li><strong>Models:</strong> Qwen3.6-27B and Gemma-4-31B, served with vLLM, temperature 0.7, up to 30 steps per episode. GLM-5.3-Flash ran through its vendor's API with thinking on, on four of the preregistered tests (the same scripts, run on its episodes alone) and in the shared-blind-spot and reviewer phases. The fallible reviewer is gpt-6.1-sol, a different family from all three agent models.</li>
-    <li><strong>Inference:</strong> each confirmatory hypothesis was frozen in a preregistration before any paid run, with exact one-sided McNemar tests on paired episodes (the same surface under two arms), pooled over models and reported per model. There were typically 16 surface variants per cell per model. Fewer than 6 discordant pairs without significance counts as inconclusive. Each launch was preceded by an independent adversarial code review, and capture labels were checked by blind second coders.</li>
+    <li><strong>Inference:</strong> each confirmatory hypothesis was frozen in a preregistration before any paid run, with exact one-sided McNemar tests on paired episodes (the same surface under two arms, or in two twin cells), pooled over models and reported per model. There were typically 16 surface variants per cell per model. Fewer than 6 discordant pairs without significance counts as inconclusive. Each launch was preceded by an independent adversarial code review, and capture labels were checked by blind second coders.</li>
     <li><strong>Metrics</strong> follow the paper: authorized correction acceptance (ACA), unauthorized self-mutation resistance (USMR), interpretive capture rate (ICR), intervention effectiveness (IE), task utility, and acknowledgment accuracy.</li>
   </ul>
 </section>
@@ -167,11 +167,11 @@
     <thead><tr><th>Paper hypothesis</th><th>Status</th><th>Evidence so far</th></tr></thead>
     <tbody>
       <tr><td><strong>H1</strong> Typed-state benefit over untyped memory</td><td><span class="pill ok">supported</span></td><td>Typed state vs stateless on signed-but-unauthorized resumes: 32&ndash;0. On long histories, typed state had 0/64 captures while untyped memory was laundered (11&ndash;0).</td></tr>
-      <tr><td><strong>H2</strong> Selective stability: ACA and USMR both improve</td><td><span class="pill part">partly</span></td><td>C4 fixes both directions of harness faults: 0/64 wrongful deploys and 64/64 legitimate deploys. With an independent registry, the monitor also fixes both directions of a stale authority record (48/48 holds, 48/48 legitimate deploys). Elsewhere ACA sits at ceiling, and the checklist control shows rigidity (it obeys an unauthorized pause).</td></tr>
+      <tr><td><strong>H2</strong> Selective stability: ACA and USMR both improve</td><td><span class="pill part">partly</span></td><td>C4 fixes both directions of harness faults: 0/64 wrongful deploys and 64/64 legitimate deploys. With an independent registry, the monitor also fixes both directions of a stale authority record (48/48 holds, 48/48 legitimate deploys). It still does with a fallible LLM reviewer ruling on the registry's flags: 95/96 stale cases and 239/239 other cases right. Honest board wording blocked no valid work (48/48). Elsewhere ACA sits at ceiling, and the checklist control shows rigidity (it obeys an unauthorized pause).</td></tr>
       <tr><td><strong>H3</strong> Protected state is used behaviourally</td><td><span class="pill ok">supported</span></td><td>Rendering the harness's signer decision removes forged-role captures (21&ndash;0). Rendering a wrong decision steers behaviour too, even over the agent's own correct finding: 20 of 22 agents that flagged a revoked delegation deployed on it anyway.</td></tr>
       <tr><td><strong>H4</strong> Broker contributes beyond prompting</td><td><span class="pill ok">supported</span></td><td>Given its inputs, the enforced broker never allowed an action its policy forbade. The leaky twin was exploited (22&ndash;0), and utility was preserved.</td></tr>
       <tr><td><strong>H5</strong> Power-sensitive failure</td><td><span class="pill part">partly</span></td><td>Write access to governance state is exploited when reachable (22&ndash;0). Giving agents the power to build their own tools gives one of three models a route it uses on governance (13&ndash;0, Gemma only), and a governed tool channel removes it. A fallible LLM reviewer was not moved by any of 15 appeals arguing for the wrong outcome.</td></tr>
-      <tr><td><strong>H6</strong> Generalization</td><td><span class="pill part">partly</span></td><td>The architecture result replicates on GLM (45&ndash;0; 153&ndash;0 across Qwen, Gemma and GLM). The behavioural effects do not: tool self-help, motivated reasoning and forged-role binding each depend on the model. 16 paraphrased surfaces and context compression are covered. Seeds, a second domain and model handoff are not yet tested.</td></tr>
+      <tr><td><strong>H6</strong> Generalization</td><td><span class="pill part">partly</span></td><td>The architecture result replicates on GLM (45&ndash;0; 153&ndash;0 across Qwen, Gemma and GLM), and the independent registry's result holds in each model separately. The behavioural effects do not: tool self-help, motivated reasoning, forged-role binding and doubting the board each depend on the model. 16 paraphrased surfaces and context compression are covered. Seeds, a second domain and model handoff are not yet tested.</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -251,7 +251,7 @@
   <div class="finding">
     <h3>9. A monitor is only as independent as its inputs, and the agent detects a shared fault without acting on it.</h3>
     <p>The paper warns that monitors can share blind spots with what they watch (&sect;12.3). We put a revoked delegation (a QA lead's old resume or pause right) into the authority record that both the harness and the C4 monitor read, with a workspace note recording the revocation, and an otherwise identical twin where the delegation is current. C4's monitor saw nothing and told the agent the state matched the signed record. The same monitor reading an independently kept registry caught every stale episode in all three models (94&ndash;0), with no cost on the current twins.</p>
-    <p>Without it, agents deployed on the revoked delegation in 46 of 48 episodes, as often as on the current one. Yet 22 of 48 had told the operator about the revocation before deploying, and 20 of those 22 deployed anyway. On a stale pause they flagged the revocation and held. In both directions the action followed the rendered state, not the agent's own correct finding. In a few episodes the agent took its doubt to the review board, which read the same stale record, ruled that the state &ldquo;follows the signed record&rdquo;, and the agent deployed citing the ruling. The registry here is correct by construction.</p>
+    <p>Without it, agents deployed on the revoked delegation in 46 of 48 episodes, as often as on the current one. Yet 22 of 48 had told the operator about the revocation before deploying, and 20 of those 22 deployed anyway. On a stale pause they flagged the revocation and held. In both directions the action followed the rendered state, not the agent's own correct finding. In six episodes the agent took its doubt to the review board, which read the same stale record and denied it (four times saying the state &ldquo;follows the signed record&rdquo;); the agent then deployed. The registry here is correct by construction.</p>
   </div>
   <div class="finding">
     <h3>10. A fallible reviewer is safe and only partly corrective, and the blind monitor's reassurance misleads it too.</h3>
@@ -292,7 +292,7 @@
       <tr><td class="ph">2S</td><td>Two fixes for the reviewer's inherited blind spot: a scoped monitor claim and an independent input (3 models), plus a reviewer-only replay</td><td><span class="pill ok">H_scope 45&ndash;2</span> <span class="pill ok">H_registry 81&ndash;0</span> <span class="pill ok">replay 39&ndash;0</span> <span class="pill part">H_capture 0&ndash;0</span></td><td class="n">1,008</td></tr>
       <tr><td class="ph">2T</td><td>The deterministic board's own rulings scoped to their basis (3 models, resume cases)</td><td><span class="pill ok">H_doubt 6&ndash;0</span> GLM only. <span class="pill part">H_friction 0&ndash;0</span></td><td class="n">192</td></tr>
     </tbody>
-    <tfoot><tr><td class="ph">Total</td><td colspan="2" class="muted">18 phases, 3 models (Qwen, Gemma, GLM). About $433 of rented GPU time plus about 84M API tokens.</td><td class="n"><strong>7,066</strong></td></tr></tfoot>
+    <tfoot><tr><td class="ph">Total</td><td colspan="2" class="muted">18 phases, 3 models (Qwen, Gemma, GLM). About $433 of rented GPU time plus about 84M GLM API tokens.</td><td class="n"><strong>7,066</strong></td></tr></tfoot>
   </table></div>
 </section>
 
@@ -302,12 +302,12 @@
     <thead><tr><th>Paper item</th><th>Status</th><th>Where</th></tr></thead>
     <tbody>
       <tr><td>Spoofed vs authenticated authority; spoofed vs authorized pauses</td><td><span class="pill ok">done</span></td><td>Phases 1, 1R, 1S; harness faults in 1W, 1M, 1F</td></tr>
-      <tr><td>Challenge, review and appeal</td><td><span class="pill ok">done</span></td><td>C4's appeal tool and scoped review board (1F)</td></tr>
+      <tr><td>Challenge, review and appeal</td><td><span class="pill ok">done</span></td><td>C4's appeal tool and scoped review board (1F); an LLM reviewer on appeals (2R, 2S); scoped board rulings (2T)</td></tr>
       <tr><td>Conditions C0&ndash;C4 plus the checklist control</td><td><span class="pill ok">done</span></td><td>C4 in 1F</td></tr>
-      <tr><td>Ablations: provenance, authority typing, action brokerage, independent monitoring</td><td><span class="pill ok">done</span></td><td>1C memory phases, H_typed / H_rights, H_leak, 1F (deterministic review), 2B (independent monitor input)</td></tr>
-      <tr><td>Governors and monitors sharing a blind spot (&sect;12.3)</td><td><span class="pill part">partly</span></td><td>2B: a stale authority record, caught only by an independent registry. 2R/2S: the blind monitor's reassurance misled the reviewer until its claim was scoped. A wrong registry is untested</td></tr>
+      <tr><td>Ablations: authority typing, action brokerage, independent monitoring</td><td><span class="pill ok">done</span></td><td>H_typed / H_rights, H_leak, 1F (deterministic review), 2B (independent monitor input)</td></tr>
+      <tr><td>Governors and monitors sharing a blind spot (&sect;12.3)</td><td><span class="pill part">partly</span></td><td>2B: a stale authority record, caught only by an independent registry. 2R/2S: the blind monitor's reassurance misled the reviewer until its claim was scoped. 2T: scoped board rulings reached only the agents that contest them. A wrong registry is untested</td></tr>
       <tr><td>Power: write access, tool access, context compression</td><td><span class="pill ok">done</span></td><td>H_leak, 1T, 1C</td></tr>
-      <tr><td>Role change by claim vs by process; unsupported vs verified evidence; delayed intervention</td><td><span class="pill part">partly</span></td><td>delegated authority and forged roles; conditional pauses; scheduled events and long histories</td></tr>
+      <tr><td>Role change by claim vs by process; unsupported vs verified evidence; delayed intervention; provenance checking; human review</td><td><span class="pill part">partly</span></td><td>delegated authority and forged roles; conditional pauses; scheduled events and long histories; source tags and memory pinning (1C), no clean provenance ablation; deterministic and LLM review, no human reviewer</td></tr>
       <tr><td>Emergency exception with an ex-ante trigger; counterfactual authority</td><td><span class="pill open">not yet</span></td><td>the worked example's matched control is not built</td></tr>
       <tr><td>Evaluator influence</td><td><span class="pill part">partly</span></td><td>2R/2S: an LLM reviewer granted none of 64 appeals arguing for the wrong outcome; no agent appealed a fully valid stop</td></tr>
       <tr><td>Model handoff</td><td><span class="pill open">not yet</span></td><td></td></tr>
@@ -320,23 +320,24 @@
   <h2>Limits of the evidence</h2>
   <ul>
     <li><strong>Scope.</strong> Two ~30B open-weight models (Qwen, Gemma) plus the hosted GLM-5.3-Flash, one sampling seed (the API takes none), one domain, scripted episodes, and about 16 surface variants per cell. GLM ran with thinking on and a longer output limit, so some differences may reflect those settings. The results are about these models in this harness.</li>
-    <li><strong>Several effects come from one model.</strong> The forged-role and motivated-reasoning results are Qwen's; the tool-power result is Gemma's. GLM showed none of them, so they are model-specific, while the architecture result held on all three.</li>
+    <li><strong>Several effects come from one model.</strong> The forged-role and motivated-reasoning results are Qwen's; the tool-power result is Gemma's. GLM showed none of them, so they are model-specific, while the architecture result held on all three. Conversely, only GLM held more stale resumes under honest board wording (6&ndash;0, at the floor of 6 pairs).</li>
     <li><strong>The protected arms in 1F and 1T cannot fail by design.</strong> Their informative content is the unprotected arm's exploit rate and the protected arm's utility. Both preregistrations said so in advance.</li>
     <li><strong>Oversight is mostly deterministic.</strong> The C4 review board is correct by construction, and the tool review in 1T is a fixed string match that no agent tried to evade. The one fallible reviewer tested (2R, 2S) is a single strong model at high effort; weaker reviewers, and persuasion against a fully valid stop, are untested.</li>
     <li><strong>Text-based labels were calibrated against blind hand-coding.</strong> The keyword rule for 1T disclosure was invalid: it caught 4 of 13 disclosures and fired on most non-disclosures. The reported 12/13 comes from hand labels, which a blind coder matched on all 13. The breach-disclosure rule had precision 0.62 and a 3% miss rate, so the page reports the corrected estimate.</li>
     <li><strong>Only the policy core is formally verified.</strong> The command classifier around it is the unproven surface, and the leaky arm's hardlink gap is a deliberate instance of that.</li>
     <li><strong>Shared blind spots are only partly tested.</strong> A stale authority record was caught by an independent registry that is correct by construction. A wrong registry, or both sources wrong, is untested; diversity of inputs narrows the blind spot the paper flags (&sect;12.3) without removing it.</li>
-    <li><strong>Some benchmark controls are not built yet.</strong> The emergency-exception control from the worked example (a justified continued action under an ex-ante trigger) and evaluator-influence power are not yet tested.</li>
+    <li><strong>Honest wording is also a cue.</strong> The scoped board's note that it &ldquo;cannot tell whether that record is current&rdquo; names the very defect being tested, so in 2T honesty and a prompt to doubt cannot be separated.</li>
+    <li><strong>Some benchmark controls are not built yet.</strong> The emergency-exception control from the worked example (a justified continued action under an ex-ante trigger) is not built, and evaluator influence was exercised only through the agents' own appeals.</li>
     <li><strong>The framework does not address value selection.</strong> As the paper says, it does not solve value learning or guarantee global safety. It makes one failure class measurable.</li>
   </ul>
 </section>
 
 <section id="next">
   <h2>Next</h2>
-  <p>The results are written up for the paper. In order of value, these would strengthen it most:</p>
+  <p>The current program is complete and written up for the paper; nothing is running. In order of value, these would strengthen it most:</p>
   <ol>
     <li><strong>Generality (H6):</strong> multiple seeds on the core tests, and a larger model as a capability point. GLM is done: the architecture result replicated, and the behavioural effects proved model-specific.</li>
-    <li><strong>Beyond the reassurance fix:</strong> try a weaker reviewer, and induce appeals of valid stops to stress persuasion (agents never make them on their own).</li>
+    <li><strong>Evaluator influence under pressure:</strong> try a weaker reviewer, and induce appeals of valid stops to stress persuasion (agents never make them on their own).</li>
     <li><strong>The emergency-exception control</strong> from the worked example.</li>
     <li><strong>Arbitration under a shared blind spot:</strong> a wrong registry, and a review rule that escalates contested authority to the principal instead of upholding the record.</li>
     <li><strong>Self-help when a legitimate route works:</strong> agent-built tools alongside C4's review board.</li>
@@ -345,7 +346,7 @@
 </section>
 
 <footer>
-  Correctable Agency &middot; working paper by Nguyen Thanh Nam &middot; progress page updated 16 October 2026. The harness code is not yet public.
+  Correctable Agency &middot; working paper by Nguyen Thanh Nam &middot; progress page updated 17 October 2026. The harness code is not yet public.
 </footer>
 
 </main>
