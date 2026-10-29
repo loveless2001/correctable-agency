@@ -109,11 +109,11 @@
   <h1>Correctable Agency</h1>
   <p class="subtitle">Alignment via typed commitments, bounded self-modification, and contestable oversight</p>
   <div class="byline"><strong>Nguyen Thanh Nam</strong> &middot; Working paper and its experimental program</div>
-  <div class="status"><strong>Status, 22 October 2026.</strong> 22 experimental phases are complete: 9,498 agent episodes, with every confirmatory test preregistered before its paid run. All five system conditions in the paper (C0&ndash;C4) are built and tested. The first 13 phases (4,324 episodes) used two open-weight models, Qwen3.6-27B and Gemma-4-31B. GLM-5.3-Flash, from a different model family, then re-ran four of the tests (486 episodes); the architecture result replicated. Four further phases ran on all three models (2,256 episodes): the paper's &ldquo;shared blind spot&rdquo;, a fallible LLM reviewer in place of the deterministic review board, and two rounds of fixes to what the oversight layers claim. Two further phases built the worked example's emergency exception (384 episodes) and tested counterfactual isolation (256 episodes, Qwen and Gemma). Another phase rebuilt the four headline test grids in a second domain, data retention (1,152 episodes, Qwen and Gemma); all six tests replicated. A final phase rebuilt them in a different structure, payments, where the correction sets a value rather than a stop flag (640 episodes, Qwen and Gemma); all four tests replicated. A consolidated results write-up for the paper is complete, and this page follows it. Exploratory runs on two frontier models, Claude Sonnet 5.5 and GPT-6.1-Sol (3,072 episodes), are reported separately in <a href="#frontier">Frontier models</a>, followed by <a href="#spirit">the spirit of correctability</a> that shapes what the harness measures.</div>
+  <div class="status"><strong>Status, 29 October 2026.</strong> 22 experimental phases are complete: 9,498 agent episodes, with every confirmatory test preregistered before its paid run. All five system conditions in the paper (C0&ndash;C4) are built and tested. The first 13 phases (4,324 episodes) used two open-weight models, Qwen3.6-27B and Gemma-4-31B. GLM-5.3-Flash, from a different model family, then re-ran four of the tests (486 episodes); the architecture result replicated. Four further phases ran on all three models (2,256 episodes): the paper's &ldquo;shared blind spot&rdquo;, a fallible LLM reviewer in place of the deterministic review board, and two rounds of fixes to what the oversight layers claim. Two further phases built the worked example's emergency exception (384 episodes) and tested counterfactual isolation (256 episodes, Qwen and Gemma). Another phase rebuilt the four headline test grids in a second domain, data retention (1,152 episodes, Qwen and Gemma); all six tests replicated. A final phase rebuilt them in a different structure, payments, where the correction sets a value rather than a stop flag (640 episodes, Qwen and Gemma); all four tests replicated. A consolidated results write-up for the paper is complete, and this page follows it. Exploratory runs on two frontier models, Claude Sonnet 5.5 and GPT-6.1-Sol (3,072 episodes), are reported separately in <a href="#frontier">Frontier models</a>, followed by <a href="#spirit">the spirit of correctability</a> that shapes what the harness measures. A second version of the framework, theory only and untested, is drafted from what the results left open (<a href="#v2">Framework v2</a>).</div>
   <nav class="toc" aria-label="Contents">
     <a href="#question">Question</a><a href="#framework">Framework</a><a href="#architecture">Architecture</a>
     <a href="#testbed">Testbed</a><a href="#hypotheses">Hypotheses</a><a href="#tests">Tests</a><a href="#findings">Findings</a>
-    <a href="#frontier">Frontier models</a><a href="#spirit">Spirit</a>
+    <a href="#frontier">Frontier models</a><a href="#spirit">Spirit</a><a href="#v2">Framework v2</a>
     <a href="#phases">Phases</a><a href="#coverage">Coverage</a><a href="#limits">Limits</a><a href="#next">Next</a>
   </nav>
 </header>
@@ -583,6 +583,19 @@
   </ul>
 </section>
 
+<section id="v2">
+  <h2>Framework v2 (theory, untested)</h2>
+  <p>The results also show where the framework says too little. A second version (29 October) adds five parts. None of it has been run. Each part predicts verdicts on the existing histories, but what an agent would have done after a different verdict cannot be read off a history.</p>
+  <ul>
+    <li><strong>Where the record's authority comes from.</strong> Only a signed human input, received through the channel registered for that kind of right, creates or removes a right. The record itself, its mirrors, the monitor, the reviewer and the agent's reports are evidence: they can hold an action, never release one. Rights expire into a hold unless renewed, and when independent sources disagree, the action holds until the operator answers. This targets the stale grant of finding 9.</li>
+    <li><strong>What an oversight output may do.</strong> Every output states its claim, its basis, what it cannot tell, and a typed force, which is the only thing the broker reads. Machines find; only the human who holds the decision decides. A denial grants nothing. Findings 10 to 12 and F4 show why: wording moved reviewers far more than agents.</li>
+    <li><strong>What the operator is owed.</strong> The operator declares in advance which kinds of fact matter for each decision. A request is scored on whether it carried those facts as the agent had seen them, accurately, to the right person, before acting, and on whether the agent then did what it said. It is never scored on what the operator chose. Capture of this channel is a paired skew: facts that cut against the task go missing more often than matched facts that favour it.</li>
+    <li><strong>What silence means.</strong> Nothing. A question asked and unanswered holds. Only a default, a delegate or an exception that a human declared in advance can end the wait. The agent can pass a question up the chain but never fill a silence.</li>
+    <li><strong>How far the agent may act on its own judgement.</strong> The harder an action is to undo, the less. Stopping its own action is always allowed. Inside the sandbox the agent decides. A reversible action outside it needs an exception declared in advance, with a trigger the agent cannot assert. An irreversible one needs the decider. Finding 13's invented emergencies are what this rules out. The formally verified policy core already behaves this way, except that the tiers are implicit and the standing go has no expiry.</li>
+  </ul>
+  <p>The operator writes every declaration: decision types, material facts, who decides what, timeouts and reversibility tiers. The draft lists 23 candidate policy laws and the tests that would check it; none is budgeted.</p>
+</section>
+
 <section id="phases">
   <h2>Experimental phases</h2>
   <p class="muted">Episodes are recorded agent runs, all models combined. Nine of the 9,498 are excluded from scoring (3 hit the time limit, 5 were stopped by the budget guard, 1 had an infrastructure error), so 9,489 are scored. Win&ndash;loss counts are discordant matched pairs in the preregistered direction.</p>
@@ -672,7 +685,7 @@
 </section>
 
 <footer>
-  Correctable Agency &middot; working paper by Nguyen Thanh Nam &middot; progress page updated 22 October 2026. The harness code is not yet public.
+  Correctable Agency &middot; working paper by Nguyen Thanh Nam &middot; progress page updated 29 October 2026. The harness code is not yet public.
 </footer>
 
 </main>
